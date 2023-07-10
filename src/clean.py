@@ -8,11 +8,7 @@ class OrganizeFiles:
     """
     This class is used to organize files in a directory by moving files
     """
-    def __init__(self, directory):
-        self.directory = Path(directory)
-        if not self.directory.exists():
-            raise FileNotFoundError(f"{self.directory} does not exist")
-        
+    def __init__(self):        
         with open(DATA_DIR / 'ext.json') as f:
             ext_dirs = json.load(f)
         self.extension_dest = {}
@@ -21,10 +17,13 @@ class OrganizeFiles:
                 self.extension_dest[ext] = dir_name
                 logger.info(f"{ext} = {dir_name}")
         
-    def __call__(self):
+    def __call__(self, directory):
+        directory = Path(directory)
+        if not directory.exists():
+            raise FileNotFoundError(f"{directory} does not exist")
         logger.info(f"Organizing files to")
         file_extensions = []
-        for file_path in self.directory.iterdir():
+        for file_path in directory.iterdir():
             
             # ignore directories
             if file_path.is_dir():
@@ -41,7 +40,7 @@ class OrganizeFiles:
             if file_path.suffix not in self.extension_dest:
                 continue
             
-            DEST_DIR = self.directory / self.extension_dest[file_path.suffix]
+            DEST_DIR = directory / self.extension_dest[file_path.suffix]
             DEST_DIR.mkdir(exist_ok=True)
             
             logger.info(f'Moving {file_path.suffix:10} to {DEST_DIR}...')
@@ -49,5 +48,5 @@ class OrganizeFiles:
 
 
 if __name__ == "__main__":
-    of = OrganizeFiles('/mnt/c/Users/iNFO/Downloads')
-    of()
+    of = OrganizeFiles()
+    of('/mnt/c/Users/iNFO/Downloads')
