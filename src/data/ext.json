@@ -1,0 +1,15 @@
+{
+    "images": [
+      ".jpeg",
+      ".png",
+      ".jpg"
+    ],
+    "compressed": [
+      ".zip",
+      ".rar"
+    ],
+    "documents": [
+      ".txt",
+      ".pdf"
+    ]
+  }
